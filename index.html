@@ -1,0 +1,329 @@
+<html>
+
+<head>
+<title>DC24 Visa Request form</title>
+</head>
+
+<body>
+    <h1>Send an Email</h1>
+    <form id="emailForm"></form>
+    <script>
+        const config = {
+            recipient: "visa@debconf.org",
+            title_prefix: "DC24Visa",
+            fields: [
+                {
+                    label: "Your passport information - as stated in your passport",
+                    type: "title"
+                },
+                {
+                    label: "Surname",
+                    type: "text",
+                    name: "surname",
+                    required: true
+                },
+                {
+                    label: "Given names",
+                    type: "text",
+                    name: "givenname",
+                    required: true
+                },
+                {
+                    label: "Passport number",
+                    type: "text",
+                    name: "passport",
+                    required: true
+                },
+                {
+                    label: "Sex",
+                    type: "radio",
+                    name: "sex",
+                    options: [
+                        "Male",
+                        "Female"
+                    ]
+                },
+                {
+                    label: "Date of birth",
+                    type: "date",
+                    name: "birthdate"
+                },
+                {
+                    label: "Date of expiry",
+                    type: "date",
+                    name: "expirydate"
+                },
+                {
+                    label: "Nationality",
+                    type: "text",
+                    name: "nationality",
+                    required: true
+                },
+                {
+                    label: "Place of issue",
+                    type: "text",
+                    name: "nationality",
+                    required: true
+                },
+                {
+                    label: "About you",
+                    type: "title"
+                },
+                {
+                    label: "On which city do you currently live?",
+                    type: "text",
+                    name: "redidency",
+                    required: true
+                },
+                {
+                    label: "Are you living in home country or living abroad?",
+                    type: "radio",
+                    name: "residency_permit",
+                    options: [
+                        "Home country",
+                        "Abroad, Less then a year with valid permit",
+                        "Abroad, Between 1 and 2 years with valid permit",
+                        "Abroad, More then 2 years with valid permit"
+                    ]
+                },
+                {
+                    label: "Occupation",
+                    type: "text",
+                    name: "occupation",
+                    required: true
+                },
+                {
+                    label: "Affiliation",
+                    type: "text",
+                    name: "affiliation",
+                    required: true
+                },
+                {
+                    label: "Travel information",
+                    type: "title"
+                },
+                {
+                    label: "Date of Arrival",
+                    type: "date",
+                    name: "arrival"
+                },
+                {
+                    label: "Date of Departure",
+                    type: "date",
+                    name: "departure"
+                },
+                {
+                    label: "Where you will be staying?",
+                    type: "radio",
+                    name: "accommodation",
+                    options: [
+                        "DebConf Accommodation",
+                        "Other(Self-arranged)"
+                    ]
+                },
+                {
+                    label: "If you are not staying at DebConf Accommodation or staying longer before or after DebConf, please provide address of the accommodation",
+                    type: "textarea",
+                    name: "address_in_korea",
+                    required: false
+                },
+                {
+                    label: "Who funds your travel?",
+                    type: "radio",
+                    name: "funding",
+                    options: [
+                        "Self funded",
+                        "DebConf Bursary",
+                        "Family or relatives(parents, grandparents, etc)",
+                        "Employer",
+                        "School, college or university",
+                        "Scholarship instutution",
+                        "Other"
+                    ]
+                },
+                {
+                    label: "What kind of items are funded?",
+                    type: "checkbox",
+                    name: "items_funded",
+                    options: [
+                        "Accommodation",
+                        "Food",
+                        "Travel"
+                    ]
+                },
+                {
+                    label: "In case you applied for bursary, but not accepted or partially accepted, what's your backup plan?",
+                    type: "radio",
+                    name: "backup",
+                    options: [
+                        "I'll self fund my travel",
+                        "I'll be still able to fund travel with help from others",
+                        "I'll make travel period shorter",
+                        "I'll cancel my travel"
+                    ]
+                },
+                {
+                    label: "Your purpose or plan to join DebConf",
+                    type: "checkbox",
+                    name: "purpose",
+                    options: [
+                        "Joining as part of DebConf team",
+                        "Plan to give a speech",
+                        "To discuss specific agenda on Debian project",
+                        "To engage with the community as a sponsor",
+                        "To volunteer video team",
+                        "To volunteer front desk",
+                        "To join keysigning party"
+                    ]
+                },
+                {
+                    label: "Guarantee",
+                    type: "title"
+                },
+                {
+                    label: "Does the Korean diplomatic mission require you to submit letter of guarantee?",
+                    type: "radio",
+                    name: "guarantee_type",
+                    options: [
+                        "No",
+                        "Yes, It was stated in the website.",
+                        "Yes, It was not stated in the website, But they informed me to submit it for some reason.",
+                        "No, But they require specific text that guarantees that invitee will return to home country in the invitation letter.",
+                        "No, But I would like to request one due to my unsteady income. (or no steady income yet)"
+                    ]
+                },
+                {
+                    label: "In case Korean diplomatic mission informed you to submit one, what was their reason? could you describe?",
+                    type: "textarea",
+                    name: "guarantee_reason",
+                    required: false
+                },
+                {
+                    label: "If you need letter of guarantee from us, please describe your plan on DebCamp or DebConf.",
+                    type: "textarea",
+                    name: "travel_plan",
+                    required: false
+                },
+            ]
+        };
+
+        function generateForm(formElement, config) {
+            config.fields.forEach(field => {
+                if (field.type != "title") {
+                    const label = document.createElement("label");
+                    label.textContent = `${field.label}: `;
+                    formElement.appendChild(label);
+                    formElement.appendChild(document.createElement("br"));
+                }
+                switch (field.type) {
+                    case "title":
+                        formElement.appendChild(document.createElement("br"));
+                        const title = document.createElement("b");
+                        title.innerHTML = field.label;
+                        formElement.appendChild(title);
+                        break;
+                    case "text":
+                        const txtinput = document.createElement("input");
+                        txtinput.type = field.type;
+                        txtinput.name = field.name;
+                        if (field.required) {
+                            txtinput.required = true;
+                        }
+                        formElement.appendChild(txtinput);
+                        break;
+                    case "textarea":
+                        const input = document.createElement(field.type);
+                        input.name = field.name;
+                        if (field.required) {
+                            input.required = true;
+                        }
+                        formElement.appendChild(input);
+                        break;
+                    case "checkbox":
+                        field.options.forEach(option => {
+                            const checkbox = document.createElement("input");
+                            checkbox.type = "checkbox";
+                            checkbox.name = field.name;
+                            checkbox.value = option;
+                            formElement.appendChild(checkbox);
+                            const checkboxLabel = document.createElement("label");
+                            checkboxLabel.textContent = option;
+                            formElement.appendChild(checkboxLabel);
+                            formElement.appendChild(document.createElement("br"));
+                        });
+                        break;
+                    case "radio":
+                        field.options.forEach(option => {
+                            const radio = document.createElement("input");
+                            radio.type = "radio";
+                            radio.name = field.name;
+                            radio.value = option;
+                            formElement.appendChild(radio);
+                            const radioLabel = document.createElement("label");
+                            radioLabel.textContent = option;
+                            formElement.appendChild(radioLabel);
+                            formElement.appendChild(document.createElement("br"));
+                        });
+                        break;
+                    case "date":
+                        const dateInput = document.createElement("input");
+                        dateInput.type = "date";
+                        dateInput.name = field.name;
+                        formElement.appendChild(dateInput);
+                        break;
+                    case "select":
+                        const select = document.createElement("select");
+                        select.name = field.name;
+                        field.options.forEach(option => {
+                            const optionElement = document.createElement("option");
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            select.appendChild(optionElement);
+                        });
+                        formElement.appendChild(select);
+                        break;
+                }
+                formElement.appendChild(document.createElement("br"));
+            });
+
+            // Add submit button
+            const submitButton = document.createElement("button");
+            submitButton.type = "submit";
+            submitButton.textContent = "Send Email";
+            formElement.appendChild(submitButton);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const formElement = document.getElementById("emailForm");
+            generateForm(formElement, config);
+
+            formElement.addEventListener('submit', function (event) {
+                event.preventDefault();
+                let formdata = "";
+                for (let item of config.fields) {
+                    switch (item.type) {
+                        case "title":
+                            formdata += `\n# ${item.label}`;
+                            break;
+                        case "radio":
+                            formdata += `* ${item.label}: ${document.querySelector(`input[name="${item.name}"]:checked`).value}`;
+                            break;
+                        case "checkbox":
+                            formdata += `* ${item.label}: ${Array.from(document.querySelectorAll(`input[name="${item.name}"]:checked`)).map(checkbox => checkbox.value).join(", ")}`;
+                            break;
+                        default:
+                            formdata += `* ${item.label}: ${document.getElementsByName(item.name)[0].value}`;
+                            break;
+                    }
+                    formdata += "\n";
+                }
+                let mailto = `mailto:${config.recipient}?subject=${config.title_prefix}: ${document.getElementsByName("surname")[0].value}/${document.getElementsByName("givenname")[0].value}&body=${formdata}`;
+                alert(encodeURI(mailto));
+                window.open(encodeURI(mailto));
+                //window.location.href = mailtoLink;
+            });
+        });
+    </script>
+</body>
+
+</html>
